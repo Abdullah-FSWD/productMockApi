@@ -132,6 +132,37 @@ app.get("/api/products", (req, res) => {
   res.json(products);
 });
 
+app.post("/api/products", (req, res) => {
+  const newProduct = req.body;
+
+  // Simple validation
+  if (
+    !newProduct.name ||
+    !newProduct.price ||
+    !newProduct.description ||
+    !newProduct.description.shortDesc ||
+    !newProduct.description.detailDesc ||
+    !newProduct.image
+  ) {
+    return res
+      .status(400)
+      .json({
+        error:
+          "All fields (name, price, description (with shortDesc and detailDesc), image) are required",
+      });
+  }
+
+  // Generate a new id for the new product
+  const newId = products.length ? products[products.length - 1].id + 1 : 1;
+  newProduct.id = newId;
+
+  // Add the new product to the products array
+  products.push(newProduct);
+
+  // Return the new product
+  res.status(201).json(newProduct);
+});
+
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
