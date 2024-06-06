@@ -1,4 +1,6 @@
 import express from "express";
+import cors from "cors";
+cors.use(cors());
 const app = express();
 const port = 4000;
 
