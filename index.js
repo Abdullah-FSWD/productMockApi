@@ -1,6 +1,8 @@
-const express = require("express");
+import express from "express";
 const app = express();
 const port = 4000;
+
+app.use(express.json());
 
 // Sample product data
 const products = [
@@ -133,6 +135,7 @@ app.get("/api/products", (req, res) => {
 });
 
 app.post("/api/products", (req, res) => {
+  console.log(req.body);
   const newProduct = req.body;
 
   // Simple validation
@@ -144,12 +147,10 @@ app.post("/api/products", (req, res) => {
     !newProduct.description.detailDesc ||
     !newProduct.image
   ) {
-    return res
-      .status(400)
-      .json({
-        error:
-          "All fields (name, price, description (with shortDesc and detailDesc), image) are required",
-      });
+    return res.status(400).json({
+      error:
+        "All fields (name, price, description (with shortDesc and detailDesc), image) are required",
+    });
   }
 
   // Generate a new id for the new product
